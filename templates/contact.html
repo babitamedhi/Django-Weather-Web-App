@@ -1,0 +1,78 @@
+{% extends 'basic.html' %}
+{% block title %}
+Contact
+{% endblock title %}
+{% block body %}
+<style>
+  body {
+    background-color: #0cbaba;
+    background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
+  }
+
+  .card {
+    border-radius: 15px;
+    background-color: #ffcfdf;
+    background-image: linear-gradient(315deg, #ffcfdf 0%, #b0f3f1 74%);
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="card mt-4">
+    <div class="card-body">
+      <marquee behavior="" direction="left">Fill the details.</marquee>
+      <form action="/contact" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <h4 class="text-center">Contact</h4>
+          <label for="fullname">FullName</label>
+          <input
+            type="text"
+            class="form-control"
+            name="fullname"
+            id="fullname"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            id="email"
+            required
+          />
+        </div>
+        
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            class="form-control"
+            name="description"
+            id="description"
+            rows="2"
+          ></textarea>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock body %}

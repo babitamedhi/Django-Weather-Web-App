@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "off",
+      {
+        "ignore": [
+          "-webkit-tap-highlight-color",
+          "-webkit-tap-highlight-color"
+        ]
+      }
+    ]
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not and_ff <= 126",
+    "not firefox <= 127",
+    "not safari <= 17.5"
+  ]
+}

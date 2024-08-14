@@ -1,0 +1,476 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}
+Weather App
+{% endblock title %}
+{% block body %}
+<style>
+
+    body {
+        background-color: #0d1b2a;
+        color: #fff;
+        font-family: "Montserrat", sans-serif;
+        margin: 0;
+        padding: 0;
+        font-weight: 500;
+        background-image: url("{% static 'images/cloudy1.jpg' %}");
+        
+    }
+
+    
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+    }
+    
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #182c47;
+        border-radius: 15px;
+        box-shadow: 10px 10px 20px #0a0f1b, -10px -10px 20px #141e2f;
+        transition: 0.3s;
+    }
+    
+    .navbar .forecast-header {
+        font-size: 2rem;
+        color: #fff;
+    }
+    
+    .navbar .search-city {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 1rem;
+    }
+    
+    .card {
+        border-radius: 15px;
+        background: linear-gradient(145deg, #182c47, #0b1624);
+        box-shadow: 10px 10px 20px #0a0f1b, -10px -10px 20px #141e2f;
+        margin: 20px auto;
+        padding: 20px;
+        width: 100%;
+        max-width: 800px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+
+
+.temperature-container {
+  text-align: center;
+  margin: auto;
+  font-size: 50px;
+}
+
+.temperature-icon {
+  margin-bottom: -15px;
+  padding: 0;
+}
+
+.temperature-value {
+  margin-top: -15px;
+  padding: 0;
+  color: #fff;
+}
+
+    
+.weather-type {
+    font-weight: 400;
+    text-align: center;
+    color: #fff;
+  }
+    
+  
+.additionals-first-row,
+.additionals-second-row
+ {
+  font-size: 12.5px;
+  width: 100%;
+  text-align: center;
+}
+
+.additionals-first-row {
+  margin-bottom: 12.5px;
+}
+
+.additionals-second-row {
+  margin-top: 12.5px;
+}
+ 
+.real-feel-additional,
+.humidity-additional,
+.max-temperature-additional,
+.min-temperature-additional {
+  margin-left: 5px;
+  margin-right: 5px;
+  background: #fff;
+  border-radius: 50px;
+  padding: 2.5px 10px;
+  color:black;
+  font-weight: bold;
+}
+
+.wind-speed-additional,
+.wind-direction-additional,
+.visibility-additional,
+.pressure-additional,
+.sunrise-additional,
+.sunset-additional {
+  margin-left: 5px;
+  margin-right: 5px;
+  background: #fff;
+  border-radius: 50px;
+  padding: 2.5px 10px;
+  color:black;
+  font-weight: bold;
+
+}
+
+    
+    .section {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 15px;
+        background: linear-gradient(145deg, #182c47, #0b1624);
+        box-shadow: 10px 10px 20px #0a0f1b, -10px -10px 20px #141e2f;
+    }
+    
+    .section h4 {
+        margin-bottom: 15px;
+        color: #0d47a1;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    
+    .chart-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 50vh; /* 80% of viewport height */
+        width: 80vw; /* Full viewport width */
+        margin: 100px auto 20px auto; /* Margin to ensure spacing around the container */
+        background-image: url("{% static 'images/cloudy1.jpg' %}");
+        background-size: cover;
+    }
+    
+    
+.daily-forecast {
+    padding: 25px;
+    margin-top: -25px;
+    text-align: center;
+  }
+  
+  .daily-forecast .daily-forecast-label {
+    color: #fff;
+  }
+   
+    
+    .forecast-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+   
+.daily-forecast-card {
+    display: inline-block;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0);
+    width: 125px;
+    height: 162.5px;
+    padding: 2.5px 10px;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    color: #fff;
+  }
+  
+  .daily-forecast-card .daily-forecast-logo {
+    font-size: 37.5px;
+    margin: -10px -10px;
+  }
+  
+  .daily-forecast-card .daily-forecast-date {
+    font-size: 17.5px;
+    margin-top: 12.5px;
+    font-weight: 400;
+  }
+  
+  .daily-forecast-card .daily-forecast-logo {
+    margin-top: -15px;
+    margin-bottom: 2.5px;
+  }
+  
+  .daily-forecast-card .weather-type-daily-forecast {
+    font-weight: normal;
+    margin-top: 2.5px;
+  }
+  
+  .max-daily-forecast {
+    font-weight: bold;
+    font-size: 25px;
+  }
+  
+    
+    .weather-type-daily-forecast {
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 600px) {
+        .navbar {
+            display: none;
+        }
+    
+        .additionals-first-row,
+        .additionals-second-row {
+          line-height: 27.5px;
+          margin: 0;
+        }
+      
+        .additionals-first-row span,
+        .additionals-second-row span {
+          display: none;
+        }
+      
+        .daily-forecast-card {
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+      
+        .daily-forecast .daily-forecast-label {
+          background: lightgrey;
+          color: #252525;
+          padding: 10px;
+          width: 75%;
+          border-radius: 50px;
+          margin: auto;
+        }
+      
+        #weatherType {
+          margin-top: 0;
+        }
+         
+    }
+    
+</style>
+
+<div class="container mt-4">
+    <div class="navbar">
+        <div class="forecast-header">
+            ⛄ Forecast
+        </div>
+        <form action="" method="get">
+            <input spellcheck="false" class="search-city" id="searchCity" type="text" name="city" autocomplete="off"
+                placeholder="🔍︎ Search City">
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="temperature-container">
+                <h1>{{ result.region }}</h1>
+                <div class="temperature-icon"><img class="imgs-as-icons" src="{{ result.icon_url }}"></div>
+                <div class="temperature-value" id="temperatureValue">{{ result.temp_now }} °C</div>
+            </div>
+
+            <h2 class="weather-type" id="weatherType">{{ result.description }}</h2>
+
+            <div class="additionals-first-row">
+            
+                <span class="real-feel-additional">
+                    <span class="real-feel-additional-label">Real Feel </span>
+                    <span class="real-feel-additional-value" id="realFeelAdditionalValue">{{ result.feels_like }} °C</span>
+                </span>
+
+                <span class="humidity-additional">
+                    <span class="humidity-additional-label">Humidity </span>
+                    <span class="humidity-additional-value" id="humidityAdditionalValue">{{ result.humidity }}%</span>
+                </span>
+
+                <span class="max-temperature-additional">
+                    <span class="max-temperature-additional-label">Highest Temperature </span>
+                    <span class="max-temperature-additional-value" id="maxTemperatureAdditionalValue">{{ result.temp_max }} °C</span>
+                </span>
+
+                <span class="min-temperature-additional">
+                    <span class="min-temperature-additional-label">Lowest Temperature </span>
+                    <span class="min-temperature-additional-value" id="minTemperatureAdditionalValue">{{ result.temp_min }} °C</span>
+                </span>
+            </div>
+
+            <div class="additionals-second-row">
+                <span class="wind-speed-additional">
+                    <span class="wind-speed-additional-label">Wind Speed </span>
+                    <span class="wind-speed-additional-value" id="windSpeedAdditionalValue">{{ result.wind_speed }} m/s</span>
+                </span>
+
+                <span class="wind-direction-additional">
+                    <span class="wind-direction-additional-label">Wind Direction </span>
+                    <span class="wind-direction-additional-value" id="windDirectionAdditionalValue">{{ result.wind_deg }}&deg;</span>
+                </span>
+
+                <span class="visibility-additional">
+                    <span class="visibility-additional-label">Visibility </span>
+                    <span class="visibility-additional-value" id="visibilityAdditionalValue">{{ result.visibility }} m</span>
+                </span>
+
+                <span class="pressure-additional">
+                    <span class="pressure-additional-label">Pressure </span>
+                    <span class="pressure-additional-value" id="pressureAdditionalValue">{{ result.pressure }} hPa</span>
+                </span>
+
+                <span class="sunrise-additional">
+                    <span class="sunrise-additional-label">Sunrise </span>
+                    <span class="sunrise-additional-value" id="sunriseAdditionalValue">{{ result.sunrise }}</span>
+                </span>
+
+                <span class="sunset-additional">
+                    <span class="sunset-additional-label">Sunset </span>
+                    <span class="sunset-additional-value" id="sunsetAdditionalValue">{{ result.sunset }}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="daily-forecast">
+        <h2 class="daily-forecast-label">5-Day Forecast</h2>
+        <div id="forecast-container" class="forecast-container">
+            {% for day in forecast %}
+            <div class="daily-forecast-card">
+                <p class="daily-forecast-date">{{ day.date }}</p>
+                <div class="daily-forecast-logo">
+                    <img class="imgs-as-icons" src="{{ day.icon_url }}"> <!-- Dynamic icon URL -->
+                </div>
+                <div class="max-min-temperature-daily-forecast">
+                    <span class="max-daily-forecast">{{ day.temp_max }}<sup>o</sup>C</span>
+                    <span class="min-daily-forecast">{{ day.temp_min }}<sup>o</sup>C</span>
+                </div>
+                <p class="weather-type-daily-forecast">{{ day.description }}</p> <!-- Dynamic weather description -->
+
+
+                {% if day.temp_max > 35 %}
+                <p class="weather-warning">⚠️ </p> <!--Extreme heat is expected. Stay hydrated and avoid going outside during peak hours. -->
+                {% elif day.temp_max > 30 %}
+                <p class="weather-warning">🌞</p> <!--  Hot weather today. Ensure you stay cool and hydrated.-->
+                {% elif day.temp_max < 0 %}
+                <p class="weather-warning">❄️ </p><!-- Freezing temperatures. Dress warmly and take precautions to avoid frostbite.-->
+                {% elif day.description|lower == "rainy" %}
+                <p class="weather-warning">🌧️ </p><!--Rainy weather is expected. Be prepared for possible flooding and carry an umbrella. -->
+                {% elif day.description|lower == "snowy" %}
+                <p class="weather-warning">❄️</p><!-- Snowfall expected. Roads may be slippery; drive carefully and stay warm. -->
+                {% elif day.description|lower == "cyclone" %}
+                <p class="weather-warning">🌪️ </p><!--Cyclone warning. Stay indoors and follow local safety advisories. -->
+                {% else %}
+                <p class="weather-warning">✅</p><!-- Weather looks fine today. Enjoy your day, but stay updated for any changes. -->
+                {% endif %}
+               
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="forecastChart"></canvas>
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h4>About the Application</h4>
+        <p>This Weather Forecast Application helps you to check the current weather and 5-day forecast for any city
+            around the world. Enter the name of the city in the search box and get the weather details instantly.
+        </p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if forecast %}
+    const forecastData = {{ forecast|safe }};
+    const labels = forecastData.map(day => day.date);
+    const tempMaxData = forecastData.map(day => day.temp_max);
+
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+  
+    const forecastChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Max Temperature (°C)',
+                data: tempMaxData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 3, // Thickness of the line
+                tension: 0.4, // Optional: Smooth line transitions
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'black', // Optional: Grid line color
+                    },
+                    ticks: {
+                        font: {
+                            weight: 'bold', // Make y-axis labels bold
+                        }
+                    },
+                    border: {
+                        color: 'black', // Set y-axis line color to black
+                        width: 3, // Thickness of y-axis line
+                    },
+                     grid: {
+                        color: 'black', // Optional: Grid line color
+                    },
+
+                },
+                x: {
+                    grid: {
+                        color: 'black', // Optional: Grid line color
+                    },
+                    ticks: {
+                        font: {
+                            weight: 'bold', // Make x-axis labels bold
+                           
+                                                }
+                    },
+                    border: {
+                        color: 'black', // Set x-axis line color to black
+                        width: 3, // Thickness of x-axis line
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            weight: 'bold', 
+                            // Make legend labels bold
+                        },
+                        color: 'black',
+                        
+                    }
+                }
+            }
+        }
+    });
+    
+  
+    {% endif %}
+</script>
+{% endblock body %}
+
+
+
+
+
+
+
